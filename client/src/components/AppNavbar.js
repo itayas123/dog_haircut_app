@@ -1,19 +1,18 @@
+import PropTypes from "prop-types";
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import {
   Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
+  Container,
   Nav,
-  NavItem,
-  NavLink,
-  Container
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
+  NavItem
 } from "reactstrap";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import RegisterModal from "./auth/RegisterModal";
 import LoginModal from "./auth/LoginModal";
 import Logout from "./auth/Logout";
+import RegisterModal from "./auth/RegisterModal";
 
 class AppNavbar extends Component {
   state = {
@@ -79,7 +78,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(AppNavbar);
+export default connect(mapStateToProps, null)(AppNavbar);

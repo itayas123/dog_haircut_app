@@ -1,20 +1,21 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import { connect } from "react-redux";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import {
-  Modal,
-  ModalHeader,
-  ModalBody,
+  Button,
+  Container,
   Form,
   FormGroup,
+  Input,
   Label,
-  Input
+  ListGroup,
+  ListGroupItem,
+  Modal,
+  ModalBody,
+  ModalHeader
 } from "reactstrap";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { connect } from "react-redux";
-import { getItems, deleteItem, EditItem } from "../actions/itemActions";
-import PropTypes from "prop-types";
-import { mongo } from "mongoose";
-import axios from "axios";
+import { deleteItem, EditItem, getItems } from "../actions/itemActions";
 
 class WaitingList extends Component {
   state = {
@@ -50,8 +51,10 @@ class WaitingList extends Component {
     e.preventDefault();
 
     const item = {
+      email: this.props.auth.user.email,
       name: this.state.name,
-      date_time: this.state.date_time,
+      date_time: this.state.date_time.slice(0, 10),
+      hour_time: this.state.date_time.slice(11),
       _id: this.state.id
     };
     this.props.EditItem(this.state.id, item);
@@ -68,7 +71,7 @@ class WaitingList extends Component {
               {items.map(({ _id, name, date_time, hour_time, email }) => (
                 <CSSTransition key={_id} timeout={500} classNames="fade">
                   <ListGroupItem>
-                    {isAuthenticated && email === user.name ? (
+                    {isAuthenticated && email === user.email ? (
                       <Button
                         className="remove-btn"
                         color="danger"
@@ -78,7 +81,7 @@ class WaitingList extends Component {
                         &times;
                       </Button>
                     ) : null}
-                    {isAuthenticated && email === user.name ? (
+                    {isAuthenticated && email === user.email ? (
                       <Button
                         className="edit-btn"
                         color="warning"
@@ -91,9 +94,9 @@ class WaitingList extends Component {
                     ) : null}
                     {"name: " +
                       name +
-                      " date:" +
-                      date_time +
-                      " time:" +
+                      "    date:" +
+                      date_time.slice(0, 10) +
+                      "    time:" +
                       hour_time}
                   </ListGroupItem>
                 </CSSTransition>
@@ -137,7 +140,6 @@ const mapStateToProps = state => ({
   item: state.item,
   auth: state.auth
 });
-export default connect(
-  mapStateToProps,
-  { getItems, deleteItem, EditItem }
-)(WaitingList);
+export default connect(mapStateToProps, { getItems, deleteItem, EditItem })(
+  WaitingList
+);

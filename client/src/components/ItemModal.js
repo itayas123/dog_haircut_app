@@ -1,17 +1,17 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
   Form,
   FormGroup,
+  Input,
   Label,
-  Input
+  Modal,
+  ModalBody,
+  ModalHeader
 } from "reactstrap";
-import { connect } from "react-redux";
 import { addItem } from "../actions/itemActions";
-import PropTypes from "prop-types";
 
 class ItemModal extends Component {
   state = {
@@ -50,7 +50,7 @@ class ItemModal extends Component {
   render() {
     const { isAuthenticated, user } = this.props.auth;
     if (isAuthenticated) {
-      this.state.email = user.name;
+      this.state.email = user.email;
     }
     return (
       <div>
@@ -106,7 +106,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(
-  mapStateToProps,
-  { addItem }
-)(ItemModal);
+export default connect(mapStateToProps, { addItem })(ItemModal);

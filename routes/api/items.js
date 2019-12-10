@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
 // @access  Private
 router.post("/", auth, (req, res) => {
   const newItem = new Item({
-    email: req.body.eamil,
+    email: req.body.email,
     name: req.body.name,
     date_time: req.body.date_time,
     hour_time: req.body.hour_time
